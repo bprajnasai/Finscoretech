@@ -1,14 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Finscoretech</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FinScoreTech</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Finscoretech</h1>
-  <div id="app">
-    <!-- Your web app content goes here -->
+  <div class="container">
+    <h1>FinScoreTech</h1>
+    <p>Check your financial health in 30 seconds 🚀</p>
+    
+    <div class="form-group">
+      <label for="income">Monthly Income (₹):</label>
+      <input type="number" id="income" placeholder="e.g. 50000" />
+    </div>
+
+    <div class="form-group">
+      <label for="expenses">Monthly Expenses (₹):</label>
+      <input type="number" id="expenses" placeholder="e.g. 25000" />
+    </div>
+
+    <div class="form-group">
+      <label for="savings">Current Savings (₹):</label>
+      <input type="number" id="savings" placeholder="e.g. 150000" />
+    </div>
+
+    <button onclick="calculateScore()">Calculate FinScore</button>
+
+    <div id="result" class="result-box"></div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>

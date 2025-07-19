@@ -4,22 +4,26 @@ function calculateScore() {
   const savings = parseFloat(document.getElementById("savings").value);
   const resultBox = document.getElementById("result");
 
+  // Check for valid inputs
   if (isNaN(income) || isNaN(expenses) || isNaN(savings)) {
     resultBox.innerHTML = "❗ Please enter valid numbers in all fields.";
     return;
   }
 
+  // Basic scoring logic
   let score = (savings / income) * 100 - (expenses / income) * 50;
   score = Math.max(0, Math.min(100, Math.round(score)));
 
-  let message = `Your FinScore is ${score}/100.<br>`;
+  // Feedback message
+  let message = `💡 Your FinScore is <strong>${score}/100</strong><br><br>`;
   if (score > 80) {
-    message += "💸 Great! You're financially strong.";
+    message += "✅ Excellent! You are financially strong. Keep it up! 💰";
   } else if (score > 50) {
-    message += "🧐 Doing okay, but can improve savings.";
+    message += "⚠️ You're doing okay, but try to improve your savings.";
   } else {
-    message += "⚠️ Consider reducing expenses or increasing income.";
+    message += "🚨 Warning! Reconsider your financial habits — reduce expenses or grow income.";
   }
 
   resultBox.innerHTML = message;
 }
+
