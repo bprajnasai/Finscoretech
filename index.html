@@ -1,34 +1,14 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>FinScoreTech</title>
+  <title>Finscoretech</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>💸 FinScoreTech – Smart Finance Dashboard</h1>
-
-  <div class="container">
-    <div>
-      <input id="incomeInput" type="number" placeholder="Enter Income ₹" />
-      <input id="expenseInput" type="number" placeholder="Enter Expense ₹" />
-      <button onclick="addTransaction()">Add</button>
-    </div>
-
-    <div id="summary">
-      <p><strong>Total Income:</strong> ₹<span id="totalIncome">0</span></p>
-      <p><strong>Total Expense:</strong> ₹<span id="totalExpense">0</span></p>
-      <p><strong>FinScore™:</strong> <span id="finScore">0</span></p>
-      <p id="tip"></p>
-      <button onclick="downloadReport()">Download PDF Report</button>
-    </div>
-
-    <canvas id="expenseChart" width="300" height="300"></canvas>
+  <h1>Finscoretech</h1>
+  <div id="app">
+    <!-- Your web app content goes here -->
   </div>
-
-  <script src="chart.min.js"></script>
-  <script src="jspdf.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
