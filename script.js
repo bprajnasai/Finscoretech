@@ -14,11 +14,11 @@ function calculateScore() {
 
   let message = `💡 Your FinScore is <strong>${score}/100</strong><br><br>`;
   if (score > 80) {
-    message += "✅ Excellent! You are financially strong. Keep it up! 💰";
+    message += "✅ Excellent! You're financially strong 💰";
   } else if (score > 50) {
-    message += "⚠️ You're doing okay, but try to improve your savings.";
+    message += "⚠️ Doing okay. Try to save more!";
   } else {
-    message += "🚨 Warning! Reconsider your financial habits.";
+    message += "🚨 Warning! Improve your financial habits!";
   }
 
   resultBox.innerHTML = message;
