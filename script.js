@@ -9,6 +9,11 @@ function calculateScore() {
     return;
   }
 
+  if (income < 0 || expenses < 0 || savings < 0) {
+    resultBox.innerHTML = "🚫 Negative values are not allowed. Please enter only positive numbers.";
+    return;
+  }
+
   let score = (savings / income) * 100 - (expenses / income) * 50;
   score = Math.max(0, Math.min(100, Math.round(score)));
 
