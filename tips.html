@@ -3,18 +3,55 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Smart Tips</title>
+  <title>Smart Tips Generator</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container" data-aos="fade-right">
-    <h2>💡 Smart Financial Tips</h2>
-    <ul id="tipsList">
-      <li style="--i:1">💰 Save at least 20% of your income.</li>
-      <li style="--i:2">📊 Use the 50-30-20 budgeting rule.</li>
-      <li style="--i:3">🧾 Track your expenses daily.</li>
-      <li style="--i:4">📈 Invest in SIPs or mutual funds.</li>
-    </ul>
+  <div class="container" data-aos="fade-up">
+    <h2>🧠 Personalized Financial Tips</h2>
+    <input type="number" id="score" placeholder="Enter Your FinScore (0–100)">
+    <button onclick="generateTips()">Generate Tips</button>
+    <ul id="generatedTips" style="margin-top:20px; text-align:left;"></ul>
   </div>
+  <script>
+    function generateTips() {
+      const score = parseInt(document.getElementById("score").value);
+      const tips = document.getElementById("generatedTips");
+      tips.innerHTML = "";
+
+      if (isNaN(score) || score < 0 || score > 100) {
+        tips.innerHTML = "<li>❗ Enter a valid FinScore between 0 and 100.</li>";
+        return;
+      }
+
+      let advice = [];
+
+      if (score < 40) {
+        advice = [
+          "💸 Limit non-essential spending immediately.",
+          "📓 Start tracking expenses daily using an app.",
+          "🏦 Build an emergency fund with 3 months’ expenses."
+        ];
+      } else if (score < 80) {
+        advice = [
+          "💰 Stick to the 50-30-20 rule for budgeting.",
+          "📈 Consider investing in mutual funds.",
+          "📊 Review your spending patterns every month."
+        ];
+      } else {
+        advice = [
+          "🧠 Diversify your investment portfolio.",
+          "📉 Avoid debt and maintain a good credit score.",
+          "🎯 Set long-term goals like retirement or home."
+        ];
+      }
+
+      advice.forEach(tip => {
+        const li = document.createElement("li");
+        li.textContent = tip;
+        tips.appendChild(li);
+      });
+    }
+  </script>
 </body>
 </html>
