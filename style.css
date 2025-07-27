@@ -1,27 +1,45 @@
-
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
   overflow-x: hidden;
+  animation: fadeInBody 1s ease-in;
 }
-
+@keyframes gradientBG {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+@keyframes fadeInBody {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 .hero {
   text-align: center;
   padding: 100px 20px;
 }
-
 h1 {
   font-size: 3rem;
   color: white;
+  animation: popIn 1s ease-out;
 }
-
+@keyframes popIn {
+  0% {opacity: 0; transform: scale(0.8) translateY(-50px);}
+  100% {opacity: 1; transform: scale(1) translateY(0);}
+}
 p {
   font-size: 1.2rem;
   color: white;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
-
+.typing-text {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  height: 30px;
+}
 .btn {
   display: inline-block;
   padding: 15px 30px;
@@ -32,48 +50,21 @@ p {
   border: none;
   border-radius: 30px;
   text-decoration: none;
+  transition: transform 0.3s ease;
 }
-
-.btn.blue {
-  background-color: #2196F3;
+.btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
-
-.btn.green {
-  background-color: #00C853;
-}
-
-.container {
-  max-width: 500px;
-  margin: 80px auto;
-  background: white;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
-  text-align: center;
-}
-
-input {
-  width: 80%;
-  padding: 10px;
-  margin: 10px 0;
-}
-
+.btn.blue { background-color: #2196F3; }
+.btn.green { background-color: #00C853; }
 .rocket-fly, .coin-fly {
   position: fixed;
   width: 100px;
   animation: float 5s infinite ease-in-out;
 }
-
-.rocket-fly {
-  top: 20px;
-  left: 10%;
-}
-
-.coin-fly {
-  bottom: 30px;
-  right: 10%;
-}
-
+.rocket-fly { top: 20px; left: 10%; }
+.coin-fly { bottom: 30px; right: 10%; }
 @keyframes float {
   0% { transform: translateY(0); }
   50% { transform: translateY(-20px); }
