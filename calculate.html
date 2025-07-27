@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculate FinScore</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-confetti"></script>
+</head>
+<body>
+  <div class="container" data-aos="fade-up">
+    <h1>Calculate FinScore</h1>
+    <input type="number" id="income" placeholder="Monthly Income ₹" title="Your total monthly earnings."/>
+    <input type="number" id="expenses" placeholder="Monthly Expenses ₹" title="Your total monthly spending."/>
+    <input type="number" id="savings" placeholder="Current Savings ₹" title="Your current savings."/>
+    <button onclick="calculateScore()">Get FinScore</button>
+    <div id="result" style="margin-top:20px; font-weight:bold;"></div>
+  </div>
+</body>
+</html>
