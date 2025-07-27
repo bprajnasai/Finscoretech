@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Career Salary Explorer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container" data-aos="zoom-in">
+    <h2>💼 Career Salary Explorer</h2>
+    <select id="careerSelect" onchange="showCareer()">
+      <option value="">Choose a career</option>
+      <option value="Software Developer">Software Developer</option>
+      <option value="Teacher">Teacher</option>
+      <option value="Designer">Designer</option>
+      <option value="Accountant">Accountant</option>
+      <option value="Freelancer">Freelancer</option>
+    </select>
+    <div id="careerResult" style="margin-top:20px;"></div>
+  </div>
+  <script>
+    const data = {
+      "Software Developer": {
+        salary: "₹6–20 LPA",
+        tip: "Invest in equity or ELSS, and automate savings."
+      },
+      "Teacher": {
+        salary: "₹2–6 LPA",
+        tip: "Maintain a strict monthly budget and build savings slowly."
+      },
+      "Designer": {
+        salary: "₹3–10 LPA",
+        tip: "Track irregular income and create a 6-month safety net."
+      },
+      "Accountant": {
+        salary: "₹4–8 LPA",
+        tip: "Focus on tax-saving instruments like PPF or NPS."
+      },
+      "Freelancer": {
+        salary: "₹2–12 LPA",
+        tip: "Keep emergency funds and separate business vs. personal."
+      }
+    };
+
+    function showCareer() {
+      const selected = document.getElementById("careerSelect").value;
+      const output = document.getElementById("careerResult");
+      if (!selected) {
+        output.innerHTML = "";
+        return;
+      }
+      const info = data[selected];
+      output.innerHTML = `<strong>Average Salary:</strong> ${info.salary}<br><strong>Tip:</strong> ${info.tip}`;
+    }
+  </script>
+</body>
+</html>

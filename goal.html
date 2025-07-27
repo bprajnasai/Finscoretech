@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Savings Goal Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container" data-aos="fade-up">
+    <h2>🎯 Savings Goal Calculator</h2>
+    <input type="number" id="current" placeholder="Current Savings ₹">
+    <input type="number" id="monthly" placeholder="Monthly Saving ₹">
+    <input type="number" id="goal" placeholder="Target Goal ₹">
+    <button onclick="calculateGoal()">Calculate Time</button>
+    <div id="goalResult" style="margin-top:20px;"></div>
+  </div>
+  <script>
+    function calculateGoal() {
+      const current = parseFloat(document.getElementById("current").value);
+      const monthly = parseFloat(document.getElementById("monthly").value);
+      const goal = parseFloat(document.getElementById("goal").value);
+      const result = document.getElementById("goalResult");
+
+      if (isNaN(current) || isNaN(monthly) || isNaN(goal) || current < 0 || monthly <= 0 || goal <= 0) {
+        result.innerHTML = "❗ Please enter valid positive values.";
+        return;
+      }
+
+      const remaining = goal - current;
+      const months = Math.ceil(remaining / monthly);
+      const today = new Date();
+      today.setMonth(today.getMonth() + months);
+      const options = { month: 'long', year: 'numeric' };
+
+      if (remaining <= 0) {
+        result.innerHTML = "🎉 You already reached your savings goal!";
+      } else {
+        result.innerHTML = `⏳ You will reach ₹${goal} in <strong>${months}</strong> month(s) by <strong>${today.toLocaleDateString('en-IN', options)}</strong>.`;
+      }
+    }
+  </script>
+</body>
+</html>
