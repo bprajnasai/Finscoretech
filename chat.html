@@ -49,6 +49,7 @@
 <body>
   <div class="chat-container">
     <h2>🤖 Ask Your AI Finance Assistant</h2>
+    <p style="font-size: 0.9em; color: #eee;">Paste your OpenAI API key & org ID directly inside the script below ⬇️</p>
     <div class="chat-box" id="chatBox"></div>
     <input type="text" id="userInput" placeholder="Ask anything about money..." />
     <button onclick="sendMessage()">Send</button>
@@ -71,7 +72,8 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer YOUR_OPENAI_API_KEY"
+          "Authorization": "Bearer YOUR_OPENAI_API_KEY",
+          "OpenAI-Organization": "org-oXMsAuVEN3ol0pY3TNJMZSeG"
         },
         body: JSON.stringify({
           model: "gpt-3.5-turbo",
