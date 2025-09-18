@@ -1,0 +1,197 @@
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --background-color: #f8f9fa;
+    --card-background: #ffffff;
+    --text-color: #343a40;
+    --transition-duration: 0.5s;
+}
+
+/* Base Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden; /* Prevent scrollbar during transitions */
+}
+
+/* Page Container and Content Card */
+.page-container {
+    width: 90%;
+    max-width: 600px;
+    padding: 2em;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.content-card {
+    background-color: var(--card-background);
+    padding: 2em;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    box-sizing: border-box;
+}
+
+/* Typography */
+.page-title {
+    font-size: 2.5em;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0.5em 0 0.2em;
+}
+
+.subtitle {
+    font-size: 1.1em;
+    color: var(--secondary-color);
+    margin-bottom: 2em;
+}
+
+/* Forms and Buttons */
+.form-group {
+    margin-bottom: 1.5em;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5em;
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.8em;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.cta-button, .back-link {
+    display: inline-block;
+    padding: 0.8em 1.5em;
+    background-color: var(--primary-color);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    margin-top: 1.5em;
+}
+
+.cta-button:hover, .back-link:hover {
+    transform: translateY(-3px);
+    background-color: #0056b3;
+}
+
+.back-link {
+    background-color: transparent;
+    color: var(--secondary-color);
+    margin-top: 3em;
+}
+
+.back-link:hover {
+    background-color: transparent;
+    color: #343a40;
+}
+
+/* Result and Graph */
+#result-section {
+    margin-top: 2em;
+}
+
+#score-display {
+    font-size: 2em;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.graph-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 2em auto 0;
+}
+
+.hidden {
+    display: none;
+}
+
+/* AI Chatbot Styles */
+.chatbot-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 500px;
+    padding: 1.5em;
+}
+
+#chat-window {
+    flex-grow: 1;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+.chat-message {
+    padding: 0.8em 1em;
+    border-radius: 18px;
+    margin-bottom: 0.8em;
+    line-height: 1.4;
+    word-wrap: break-word;
+    max-width: 80%;
+}
+
+.user-message {
+    background-color: var(--primary-color);
+    color: #fff;
+    align-self: flex-end;
+    margin-left: auto;
+    text-align: right;
+}
+
+.bot-message {
+    background-color: #e9ecef;
+    color: var(--text-color);
+    align-self: flex-start;
+    margin-right: auto;
+}
+
+#chat-form {
+    display: flex;
+    gap: 10px;
+}
+
+#chat-input {
+    flex-grow: 1;
+    padding: 0.8em;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+}
+
+.send-button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 0.8em 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.send-button:hover {
+    background-color: #0056b3;
+}
