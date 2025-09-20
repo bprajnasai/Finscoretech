@@ -3,22 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinscoreTech - Home</title>
+    <title>Finscoretech - Your Financial Health Partner</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="page-container" data-page="home">
-        <header>
-            <h1 class="page-title">FinscoreTech</h1>
-            <p class="subtitle">Your personal guide to financial health.</p>
-        </header>
-        <main class="content-card">
-            <p class="text-content">
-                Welcome to FinscoreTech, the app that helps you understand your financial well-being and gives you actionable tips.
-            </p>
-            <a href="score.html" class="cta-button">Get My Financial Score</a>
-            <a href="tips.html" class="back-link">Ask AI Assistant</a>
-        </main>
-    </div>
+    <header>
+        <nav>
+            <a href="index.html" class="nav-link active">Home</a>
+            <a href="features.html" class="nav-link">Features</a>
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </nav>
+    </header>
+
+    <main class="hero-section">
+        <div class="hero-content">
+            <h1 class="animate-fade-in">Understand Your Financial Health</h1>
+            <p class="animate-fade-in delay-1">Get your Finscore and actionable insights to grow your wealth.</p>
+            <div class="cta-buttons animate-fade-in delay-2">
+                <a href="features.html" class="cta-button primary" id="getScoreBtn">Get Started</a>
+                <a href="contact.html" class="cta-button secondary">Contact Us</a>
+            </div>
+        </div>
+    </main>
+    
+    <section class="info-section">
+        <div class="info-card animate-slide-up">
+            <h3>📈 Personalized Finscore</h3>
+            <p>A simple, clear score that reflects your current financial standing. </p>
+        </div>
+        <div class="info-card animate-slide-up delay-1">
+            <h3>💰 Smart Budgeting</h3>
+            <p>Our tools help you track income and expenses effortlessly.</p>
+        </div>
+        <div class="info-card animate-slide-up delay-2">
+            <h3>🎯 Goal Tracking</h3>
+            <p>Set and track your financial goals with ease.</p>
+        </div>
+    </section>
+
+    <script src="script.js" type="module"></script>
 </body>
 </html>

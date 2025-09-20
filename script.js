@@ -1,149 +1,226 @@
-// This script will handle logic for both the score and tips pages.
+document.addEventListener('DOMContentLoaded', () => {
 
-// Logic for the FinScore Calculator and Pie Chart (on score.html)
-if (document.getElementById('finscore-form')) {
-    const form = document.getElementById('finscore-form');
-    const resultSection = document.getElementById('result-section');
-    const scoreDisplay = document.getElementById('score-display');
-    const financialChartCtx = document.getElementById('financial-chart').getContext('2d');
-    const personalTipsList = document.getElementById('personal-tips-list');
-    
-    let myChart; // Variable to hold the chart instance
+    // --- Animation Logic ---
+    const animatedElements = document.querySelectorAll('.animate-fade-in, .animate-slide-up');
+    animatedElements.forEach(el => el.style.opacity = '0');
 
-    form.addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent default form submission
-
-        const salary = parseFloat(document.getElementById('salary').value);
-        const expenses = parseFloat(document.getElementById('expenses').value);
-        const savings = parseFloat(document.getElementById('savings').value);
-
-        // Simple Finscore Calculation (out of 100)
-        const savingsRatio = Math.min(savings / (0.2 * salary), 1);
-        const expenseRatio = Math.min(1 - (expenses / (0.5 * salary)), 1);
-        const remainingRatio = Math.min((salary - expenses - savings) / (0.3 * salary), 1);
-
-        const finscore = Math.round((savingsRatio * 50) + (expenseRatio * 30) + (remainingRatio * 20));
-
-        // Display the score
-        scoreDisplay.textContent = `Your Finscore: ${finscore}/100`;
-        resultSection.classList.remove('hidden');
-
-        // Generate dynamic tips based on score
-        personalTipsList.innerHTML = ''; // Clear previous tips
-        const tips = getTipsByScore(finscore);
-        tips.forEach(tip => {
-            const li = document.createElement('li');
-            li.textContent = tip;
-            personalTipsList.appendChild(li);
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
         });
+    }, {
+        threshold: 0.1
+    });
 
-        // Update or create the pie chart
-        if (myChart) {
-            myChart.destroy(); // Destroy the old chart instance
+    animatedElements.forEach(el => observer.observe(el));
+
+    // --- Budget Calculator Functionality ---
+    const budgetForm = document.getElementById('budget-form');
+    if (budgetForm) {
+        budgetForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const incomeInput = document.getElementById('income-input');
+            const expensesInput = document.getElementById('expenses-input');
+            const remainingBudgetDiv = document.getElementById('remaining-budget');
+
+            const income = parseFloat(incomeInput.value);
+            const expenses = parseFloat(expensesInput.value);
+
+            if (isNaN(income) || isNaN(expenses)) {
+                remainingBudgetDiv.textContent = 'Please enter valid numbers.';
+                return;
+            }
+
+            const remainingBudget = income - expenses;
+            remainingBudgetDiv.textContent = `Your remaining budget is: $${remainingBudget.toFixed(2)}`;
+            remainingBudgetDiv.style.color = remainingBudget >= 0 ? '#4CAF50' : '#F44336';
+            
+            // Render the budget chart after calculation
+            renderBudgetChart(income, expenses);
+        });
+    }
+
+    // --- AI Assistant Prompt Handler ---
+    const aiForm = document.getElementById('ai-form');
+    if (aiForm) {
+        aiForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const aiPromptInput = document.getElementById('ai-prompt-input');
+            const aiResponseDiv = document.getElementById('ai-response');
+            
+            aiResponseDiv.textContent = 'Thinking...';
+            const userPrompt = aiPromptInput.value;
+
+            setTimeout(() => {
+                aiResponseDiv.innerHTML = "Thank you for your question! **For example**, a good way to start saving is by setting a small, manageable goal and automating a transfer to a separate savings account each payday.";
+                aiPromptInput.value = '';
+            }, 1500);
+        });
+    }
+
+    // --- Goal Tracker ---
+    const setGoalBtn = document.getElementById('setGoalBtn');
+    if (setGoalBtn) {
+        setGoalBtn.addEventListener('click', () => {
+            const targetAmount = parseFloat(prompt("Enter your savings goal (e.g., 5000):"));
+            const currentAmount = parseFloat(prompt("Enter your current savings:"));
+
+            if (isNaN(targetAmount) || isNaN(currentAmount)) {
+                alert("Please enter valid numbers.");
+                return;
+            }
+
+            localStorage.setItem('targetGoal', targetAmount);
+            localStorage.setItem('currentSavings', currentAmount);
+
+            updateGoalProgress(currentAmount, targetAmount);
+            alert(`Goal of $${targetAmount} set successfully!`);
+        });
+        
+        const storedGoal = localStorage.getItem('targetGoal');
+        const storedSavings = localStorage.getItem('currentSavings');
+        if (storedGoal && storedSavings) {
+            updateGoalProgress(parseFloat(storedSavings), parseFloat(storedGoal));
         }
-        myChart = new Chart(financialChartCtx, {
+    }
+
+    function updateGoalProgress(currentAmount, targetAmount) {
+        const progressBar = document.getElementById('goalProgressBar');
+        const progressText = document.getElementById('goalProgressText');
+        
+        if (!progressBar || !progressText) return;
+
+        const percentage = (currentAmount / targetAmount) * 100;
+        progressBar.style.width = `${Math.min(percentage, 100)}%`;
+        progressText.textContent = `${percentage.toFixed(0)}%`;
+        
+        if (currentAmount >= targetAmount) {
+            progressBar.style.backgroundColor = '#2196F3';
+            progressText.textContent = 'Goal Reached! 🎉';
+        }
+    }
+    
+    // --- Data Visualization (Chart.js) ---
+    function renderBudgetChart(income, expenses) {
+        const ctx = document.getElementById('budgetChart');
+        if (!ctx) return;
+        
+        const remaining = Math.max(0, income - expenses);
+        const data = {
+            labels: ['Income', 'Expenses', 'Remaining'],
+            datasets: [{
+                data: [income, expenses, remaining],
+                backgroundColor: ['#4CAF50', '#F44336', '#2196F3'],
+                hoverOffset: 4
+            }]
+        };
+
+        if (window.budgetChartInstance) {
+            window.budgetChartInstance.destroy();
+        }
+
+        window.budgetChartInstance = new Chart(ctx, {
             type: 'pie',
+            data: data,
+            options: { responsive: true }
+        });
+    }
+    
+    const scoreData = [
+        { month: 'Jan', score: 65 },
+        { month: 'Feb', score: 70 },
+        { month: 'Mar', score: 72 },
+        { month: 'Apr', score: 75 }
+    ];
+    
+    function renderScoreTrend(data) {
+        const ctx = document.getElementById('scoreTrendChart');
+        if (!ctx) return;
+        
+        const labels = data.map(d => d.month);
+        const scores = data.map(d => d.score);
+        
+        if (window.scoreTrendChartInstance) {
+            window.scoreTrendChartInstance.destroy();
+        }
+        
+        window.scoreTrendChartInstance = new Chart(ctx, {
+            type: 'line',
             data: {
-                labels: ['Expenses', 'Savings', 'Remaining'],
+                labels: labels,
                 datasets: [{
-                    data: [expenses, savings, salary - expenses - savings],
-                    backgroundColor: [
-                        '#dc3545', // Red
-                        '#28a745', // Green
-                        '#ffc107'  // Yellow
-                    ],
-                    hoverOffset: 4
+                    label: 'Financial Score',
+                    data: scores,
+                    borderColor: '#4CAF50',
+                    tension: 0.1
                 }]
             },
             options: {
                 responsive: true,
-                plugins: {
-                    legend: { position: 'top' },
-                    tooltip: {
-                        callbacks: {
-                            label: (context) => {
-                                let label = context.label || '';
-                                if (label) { label += ': '; }
-                                if (context.parsed !== null) {
-                                    label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed);
-                                }
-                                return label;
-                            }
-                        }
-                    }
+                scales: {
+                    y: { beginAtZero: true, max: 100 }
                 }
             }
         });
-    });
-
-    // Function to get tips based on the calculated Finscore
-    function getTipsByScore(score) {
-        if (score >= 80) {
-            return [
-                "Excellent! Your finances are in great shape. Consider increasing your savings or investing a portion of your income.",
-                "You're a financial pro! Look into diversifying your investments for long-term growth.",
-                "Keep up the great work! Review your financial goals and set new milestones."
-            ];
-        } else if (score >= 50) {
-            return [
-                "Good start! Focus on reducing discretionary expenses.",
-                "Create a detailed budget to identify areas where you can save more.",
-                "Automate your savings to make them a priority each month."
-            ];
-        } else {
-            return [
-                "Time to take action! Focus on reducing your debt and tracking every expense.",
-                "Talk to a financial advisor to create a personalized plan.",
-                "Cut back on non-essential spending to improve your cash flow."
-            ];
-        }
-    }
-}
-
-// Logic for the AI Chatbot (on tips.html)
-if (document.getElementById('chat-form')) {
-    const chatForm = document.getElementById('chat-form');
-    const chatInput = document.getElementById('chat-input');
-    const chatWindow = document.getElementById('chat-window');
-
-    chatForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const userMessage = chatInput.value.trim();
-        if (userMessage) {
-            appendMessage(userMessage, 'user-message');
-            chatInput.value = '';
-            // Get a response from the "AI"
-            setTimeout(() => {
-                const botResponse = getChatbotResponse(userMessage);
-                appendMessage(botResponse, 'bot-message');
-            }, 1000); // Simulate a delay
-        }
-    });
-
-    function appendMessage(text, className) {
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('chat-message', className);
-        messageElement.textContent = text;
-        chatWindow.appendChild(messageElement);
-        // Scroll to the bottom of the chat window
-        chatWindow.scrollTop = chatWindow.scrollHeight;
     }
 
-    function getChatbotResponse(userText) {
-        const lowerText = userText.toLowerCase();
-
-        if (lowerText.includes('budget')) {
-            return "A budget is a plan for your money. It helps you track your income and expenses so you can meet your financial goals.";
-        } else if (lowerText.includes('saving') || lowerText.includes('savings')) {
-            return "To save money, try the 50/30/20 rule: 50% for needs, 30% for wants, and 20% for savings and debt repayment.";
-        } else if (lowerText.includes('investing') || lowerText.includes('invest')) {
-            return "Investing is putting your money to work. Start by researching low-cost index funds or talking to a financial expert.";
-        } else if (lowerText.includes('debt') || lowerText.includes('loan')) {
-            return "Focus on paying off high-interest debt first. The 'snowball' and 'avalanche' methods are popular strategies.";
-        } else if (lowerText.includes('hello') || lowerText.includes('hi')) {
-            return "Hello there! How can I help you with your financial questions?";
-        } else {
-            return "I'm sorry, I don't have information on that topic. Please ask me a question about budgeting, saving, or investing.";
-        }
+    if (document.getElementById('budgetChart')) {
+        renderBudgetChart(5000, 3500); 
     }
-}
+    if (document.getElementById('scoreTrendChart')) {
+        renderScoreTrend(scoreData);
+    }
+    
+    // --- Financial Education ---
+    const runQuizBtn = document.getElementById('runQuizBtn');
+    if (runQuizBtn) {
+        runQuizBtn.addEventListener('click', () => {
+            const questions = [
+                { question: "What is compound interest?", answer: "Interest on your savings and previously earned interest." },
+                { question: "Which of these is a good financial habit?", answer: "Creating a budget." }
+            ];
+
+            let score = 0;
+            questions.forEach((q, index) => {
+                const userAnswer = prompt(`${index + 1}. ${q.question}\nEnter your answer:`);
+                if (userAnswer && userAnswer.toLowerCase().includes(q.answer.toLowerCase())) {
+                    alert("Correct!");
+                    score++;
+                } else {
+                    alert(`Incorrect. The correct answer is: ${q.answer}`);
+                }
+            });
+            alert(`Quiz finished! You scored ${score} out of ${questions.length}.`);
+        });
+    }
+
+    const showGlossaryBtn = document.getElementById('showGlossaryBtn');
+    if (showGlossaryBtn) {
+        showGlossaryBtn.addEventListener('click', () => {
+            const glossary = {
+                "Budget": "A plan for how you'll spend and save money.",
+                "Assets": "Items of value that you own, such as property or investments.",
+                "Liabilities": "Debts or financial obligations, like loans or mortgages."
+            };
+            let glossaryText = "Financial Glossary:\n\n";
+            for (const term in glossary) {
+                glossaryText += `${term}: ${glossary[term]}\n\n`;
+            }
+            alert(glossaryText);
+        });
+    }
+
+    // --- Contact Form Logic ---
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your message! This is a demo. In a real app, the message would be sent to an email service.');
+            contactForm.reset();
+        });
+    }
+
+});
