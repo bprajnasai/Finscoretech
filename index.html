@@ -3,46 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finscoretech - Your Financial Health Partner</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>FinScore Dashboard</title>
+    <!-- Use Tailwind CSS for a clean, modern design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .finscore-section {
+            background: linear-gradient(135deg, #6b46c1, #805ad5);
+            color: white;
+            padding: 4rem 2rem;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+        .finscore-badge {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .advice-box {
+            background-color: #f7fafc;
+        }
+        .chart-container {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
 </head>
-<body>
-    <header>
-        <nav>
-            <a href="index.html" class="nav-link active">Home</a>
-            <a href="features.html" class="nav-link">Features</a>
-            <a href="about.html" class="nav-link">About Us</a>
-            <a href="contact.html" class="nav-link">Contact</a>
-        </nav>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Hero Section with FinScore Display -->
+    <header class="finscore-section text-center shadow-lg">
+        <div class="container mx-auto">
+            <h1 class="text-4xl font-bold mb-4">Your Financial Health Dashboard</h1>
+            <p class="text-lg mb-8">Enter your financial details to get your FinScore and personalized insights.</p>
+            <div id="scoreDisplay" class="finscore-badge mx-auto hidden">
+                <span id="finScoreValue"></span>
+            </div>
+            <div id="scoreCategory" class="text-xl font-medium mt-4 hidden"></div>
+        </div>
     </header>
 
-    <main class="hero-section">
-        <div class="hero-content">
-            <h1 class="animate-fade-in">Understand Your Financial Health</h1>
-            <p class="animate-fade-in delay-1">Get your Finscore and actionable insights to grow your wealth.</p>
-            <div class="cta-buttons animate-fade-in delay-2">
-                <a href="features.html" class="cta-button primary" id="getScoreBtn">Get Started</a>
-                <a href="contact.html" class="cta-button secondary">Contact Us</a>
-            </div>
-        </div>
-    </main>
-    
-    <section class="info-section">
-        <div class="info-card animate-slide-up">
-            <h3>📈 Personalized Finscore</h3>
-            <p>A simple, clear score that reflects your current financial standing.</p>
-        </div>
-        <div class="info-card animate-slide-up delay-1">
-            <h3>💰 Smart Budgeting</h3>
-            <p>Our tools help you track income and expenses effortlessly.</p>
-        </div>
-        <div class="info-card animate-slide-up delay-2">
-            <h3>🎯 Goal Tracking</h3>
-            <p>Set and track your financial goals with ease.</p>
-        </div>
-    </section>
+    <main class="container mx-auto p-4 md:p-8">
+        
+        <!-- Input Form Section -->
+        <section id="inputForm" class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-2xl font-semibold mb-6 text-center">Enter Your Financial Information</h2>
+            <form id="finScoreForm" class="space-y-4">
+                <div>
+                    <label for="monthlyIncome" class="block text-sm font-medium text-gray-700">Monthly Income ($)</label>
+                    <input type="number" id="monthlyIncome" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2" required>
+                </div>
+                <div>
+                    <label for="monthlySavings" class="block text-sm font-medium text-gray-700">Monthly Savings ($)</label>
+                    <input type="number" id="monthlySavings" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2" required>
+                </div>
+                <div>
+                    <label for="totalDebt" class="block text-sm font-medium text-gray-700">Total Debt ($)</label>
+                    <input type="number" id="totalDebt" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2" required>
+                </div>
+                <div>
+                    <label for="emergencyFund" class="block text-sm font-medium text-gray-700">Emergency Fund ($)</label>
+                    <input type="number" id="emergencyFund" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2" required>
+                </div>
+                <button type="submit" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                    Calculate FinScore
+                </button>
+            </form>
+        </section>
 
-    <script src="script.js" type="module"></script>
+        <!-- Results and Advice Sections (Initially Hidden) -->
+        <section id="resultsSection" class="hidden">
+            <!-- FinScore Chart Section -->
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-center">Your Financial Breakdown</h2>
+                <div class="chart-container">
+                    <canvas id="financesChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Money Management Section -->
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-center">Budgeting & Money Balance</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-xl font-medium mb-2">Income & Savings</h3>
+                        <p class="text-gray-600">Monthly Income: <span id="displayIncome" class="font-bold text-green-600"></span></p>
+                        <p class="text-gray-600">Monthly Savings: <span id="displaySavings" class="font-bold text-blue-600"></span></p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-medium mb-2">Debt & Expenses</h3>
+                        <p class="text-gray-600">Total Debt: <span id="displayDebt" class="font-bold text-red-600"></span></p>
+                        <p class="text-gray-600">Monthly Expenses: <span id="displayExpenses" class="font-bold text-red-600"></span></p>
+                        <p class="text-gray-600">Remaining Budget: <span id="displayRemaining" class="font-bold text-indigo-600"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personalized Advice Section -->
+            <div class="advice-box p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-semibold mb-4 text-center">Personalized Advice for You</h2>
+                <ul id="adviceList" class="list-disc list-inside space-y-2 text-gray-700">
+                    <!-- Advice will be dynamically added here -->
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Get references to DOM elements
+        const finScoreForm = document.getElementById('finScoreForm');
+        const finScoreValue = document.getElementById('finScoreValue');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const scoreCategory = document.getElementById('scoreCategory');
+        const resultsSection = document.getElementById('resultsSection');
+        const adviceList = document.getElementById('adviceList');
+
+        // Display elements
+        const displayIncome = document.getElementById('displayIncome');
+        const displaySavings = document.getElementById('displaySavings');
+        const displayDebt = document.getElementById('displayDebt');
+        const displayExpenses = document.getElementById('displayExpenses');
+        const displayRemaining = document.getElementById('displayRemaining');
+
+        // Chart instance
+        let myChart;
+
+        // Listen for form submission
+        finScoreForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get user input values
+            const monthlyIncome = parseFloat(document.getElementById('monthlyIncome').value);
+            const monthlySavings = parseFloat(document.getElementById('monthlySavings').value);
+            const totalDebt = parseFloat(document.getElementById('totalDebt').value);
+            const emergencyFund = parseFloat(document.getElementById('emergencyFund').value);
+
+            // Calculate the FinScore based on a simple weighted model
+            // NOTE: A real FinScore would be much more complex, using credit data, etc.
+            const savingsRate = (monthlySavings / monthlyIncome) || 0;
+            const debtToIncomeRatio = (totalDebt / (monthlyIncome * 12)) || 0;
+            const emergencyFundCoverage = (emergencyFund / (monthlyIncome - monthlySavings)) || 0;
+
+            // Calculate score (higher is better)
+            const score = (savingsRate * 50) + (emergencyFundCoverage * 30) + ((1 - Math.min(debtToIncomeRatio, 1)) * 20);
+
+            // Cap the score at 100
+            const finalScore = Math.min(score, 100).toFixed(0);
+
+            // Display the results
+            finScoreValue.textContent = finalScore;
+            scoreDisplay.classList.remove('hidden');
+            resultsSection.classList.remove('hidden');
+
+            // Determine the score category
+            let category, advice;
+            if (finalScore >= 80) {
+                category = 'Excellent';
+                advice = [
+                    "You're in great financial shape! Consider investing your extra savings to grow your wealth.",
+                    "Review your budget periodically to ensure you stay on track.",
+                    "Look into diversifying your investments for long-term growth."
+                ];
+            } else if (finalScore >= 60) {
+                category = 'Good';
+                advice = [
+                    "You are on a solid path! Focus on increasing your savings rate to improve your score.",
+                    "Consider paying down high-interest debt to free up more income.",
+                    "Start a small, automated investment plan to build long-term wealth."
+                ];
+            } else if (finalScore >= 40) {
+                category = 'Fair';
+                advice = [
+                    "There's room for improvement. Focus on building your emergency fund and reducing debt.",
+                    "Create a detailed budget to identify areas where you can cut back on spending.",
+                    "Start a debt repayment plan, focusing on one debt at a time."
+                ];
+            } else {
+                category = 'Needs Improvement';
+                advice = [
+                    "It's time to take control of your finances. The first step is to create a budget.",
+                    "Focus on building a small emergency fund, even $500 can make a difference.",
+                    "Explore options for reducing your debt, such as debt consolidation or negotiation."
+                ];
+            }
+
+            scoreCategory.textContent = category;
+            scoreCategory.classList.remove('hidden');
+
+            // Display advice
+            adviceList.innerHTML = '';
+            advice.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                adviceList.appendChild(li);
+            });
+
+            // Calculate and display budgeting info
+            const expenses = monthlyIncome - monthlySavings;
+            const remaining = monthlyIncome - expenses;
+            displayIncome.textContent = `$${monthlyIncome.toFixed(2)}`;
+            displaySavings.textContent = `$${monthlySavings.toFixed(2)}`;
+            displayDebt.textContent = `$${totalDebt.toFixed(2)}`;
+            displayExpenses.textContent = `$${expenses.toFixed(2)}`;
+            displayRemaining.textContent = `$${remaining.toFixed(2)}`;
+
+            // Create or update the chart
+            const ctx = document.getElementById('financesChart').getContext('2d');
+            const data = {
+                labels: ['Monthly Income', 'Monthly Savings', 'Monthly Expenses'],
+                datasets: [{
+                    label: 'Financial Breakdown',
+                    data: [monthlyIncome, monthlySavings, expenses],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 99, 132, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            const config = {
+                type: 'doughnut',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Your Money Flow'
+                        }
+                    }
+                }
+            };
+
+            if (myChart) {
+                myChart.destroy(); // Destroy existing chart before creating a new one
+            }
+            myChart = new Chart(ctx, config);
+
+        });
+    </script>
 </body>
 </html>
