@@ -38,22 +38,27 @@
             background-color: #2d3748;
             color: #e2e8f0;
         }
-        input {
+        input, textarea {
             background-color: #4a5568; /* Even darker input fields */
             color: #e2e8f0;
+            border: 1px solid #4a5568;
+        }
+        /* Style for the nav links on hover */
+        .nav-link:hover {
+            color: #cbd5e0;
         }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
 
     <!-- Header with Navigation -->
-    <header class="header-bg shadow-md">
+    <header class="header-bg shadow-md sticky top-0 z-50">
         <nav class="container mx-auto flex justify-between items-center py-4">
-            <a href="#home" class="text-2xl font-bold">Finscoretech</a>
+            <a href="#home" class="text-2xl font-bold nav-link">Finscoretech</a>
             <div class="space-x-4">
-                <a href="#home" class="hover:text-gray-400">Home</a>
-                <a href="#about" class="hover:text-gray-400">About Us</a>
-                <a href="#contact" class="hover:text-gray-400">Contact</a>
+                <a href="#home" class="hover:text-gray-400 nav-link">Home</a>
+                <a href="#about" class="hover:text-gray-400 nav-link">About Us</a>
+                <a href="#contact" class="hover:text-gray-400 nav-link">Contact</a>
             </div>
         </nav>
     </header>
@@ -178,88 +183,92 @@
         const displayRemaining = document.getElementById('displayRemaining');
 
         // Listen for form submission
-        finScoreForm.addEventListener('submit', function(event) {
-            event.preventDefault();
+        if (finScoreForm) {
+            finScoreForm.addEventListener('submit', function(event) {
+                event.preventDefault();
 
-            // Get user input values
-            const monthlyIncome = parseFloat(document.getElementById('monthlyIncome').value);
-            const monthlySavings = parseFloat(document.getElementById('monthlySavings').value);
-            const totalDebt = parseFloat(document.getElementById('totalDebt').value);
-            const emergencyFund = parseFloat(document.getElementById('emergencyFund').value);
+                // Get user input values
+                const monthlyIncome = parseFloat(document.getElementById('monthlyIncome').value);
+                const monthlySavings = parseFloat(document.getElementById('monthlySavings').value);
+                const totalDebt = parseFloat(document.getElementById('totalDebt').value);
+                const emergencyFund = parseFloat(document.getElementById('emergencyFund').value);
 
-            // Calculate the FinScore based on a simple weighted model
-            // NOTE: A real FinScore would be much more complex, using credit data, etc.
-            const savingsRate = (monthlySavings / monthlyIncome) || 0;
-            const debtToIncomeRatio = (totalDebt / (monthlyIncome * 12)) || 0;
-            const emergencyFundCoverage = (emergencyFund / (monthlyIncome - monthlySavings)) || 0;
+                // Calculate the FinScore based on a simple weighted model
+                // NOTE: A real FinScore would be much more complex, using credit data, etc.
+                const savingsRate = (monthlySavings / monthlyIncome) || 0;
+                const debtToIncomeRatio = (totalDebt / (monthlyIncome * 12)) || 0;
+                const emergencyFundCoverage = (emergencyFund / (monthlyIncome - monthlySavings)) || 0;
 
-            // Calculate score (higher is better)
-            const score = (savingsRate * 50) + (emergencyFundCoverage * 30) + ((1 - Math.min(debtToIncomeRatio, 1)) * 20);
+                // Calculate score (higher is better)
+                const score = (savingsRate * 50) + (emergencyFundCoverage * 30) + ((1 - Math.min(debtToIncomeRatio, 1)) * 20);
 
-            // Cap the score at 100
-            const finalScore = Math.min(score, 100).toFixed(0);
+                // Cap the score at 100
+                const finalScore = Math.min(score, 100).toFixed(0);
 
-            // Display the results
-            finScoreValue.textContent = finalScore;
-            scoreDisplay.classList.remove('hidden');
-            resultsSection.classList.remove('hidden');
+                // Display the results
+                finScoreValue.textContent = finalScore;
+                scoreDisplay.classList.remove('hidden');
+                resultsSection.classList.remove('hidden');
 
-            // Determine the score category
-            let category, advice;
-            if (finalScore >= 80) {
-                category = 'Excellent';
-                advice = [
-                    "You're in great financial shape! Consider investing your extra savings to grow your wealth.",
-                    "Review your budget periodically to ensure you stay on track.",
-                    "Look into diversifying your investments for long-term growth."
-                ];
-            } else if (finalScore >= 60) {
-                category = 'Good';
-                advice = [
-                    "You are on a solid path! Focus on increasing your savings rate to improve your score.",
-                    "Consider paying down high-interest debt to free up more income.",
-                    "Start a small, automated investment plan to build long-term wealth."
-                ];
-            } else if (finalScore >= 40) {
-                category = 'Fair';
-                advice = [
-                    "There's room for improvement. Focus on building your emergency fund and reducing debt.",
-                    "Create a detailed budget to identify areas where you can cut back on spending.",
-                    "Start a debt repayment plan, focusing on one debt at a time."
-                ];
-            } else {
-                category = 'Needs Improvement';
-                advice = [
-                    "It's time to take control of your finances. The first step is to create a budget.",
-                    "Focus on building a small emergency fund, even $500 can make a difference.",
-                    "Explore options for reducing your debt, such as debt consolidation or negotiation."
-                ];
-            }
+                // Determine the score category
+                let category, advice;
+                if (finalScore >= 80) {
+                    category = 'Excellent';
+                    advice = [
+                        "You're in great financial shape! Consider investing your extra savings to grow your wealth.",
+                        "Review your budget periodically to ensure you stay on track.",
+                        "Look into diversifying your investments for long-term growth."
+                    ];
+                } else if (finalScore >= 60) {
+                    category = 'Good';
+                    advice = [
+                        "You are on a solid path! Focus on increasing your savings rate to improve your score.",
+                        "Consider paying down high-interest debt to free up more income.",
+                        "Start a small, automated investment plan to build long-term wealth."
+                    ];
+                } else if (finalScore >= 40) {
+                    category = 'Fair';
+                    advice = [
+                        "There's room for improvement. Focus on building your emergency fund and reducing debt.",
+                        "Create a detailed budget to identify areas where you can cut back on spending.",
+                        "Start a debt repayment plan, focusing on one debt at a time."
+                    ];
+                } else {
+                    category = 'Needs Improvement';
+                    advice = [
+                        "It's time to take control of your finances. The first step is to create a budget.",
+                        "Focus on building a small emergency fund, even $500 can make a difference.",
+                        "Explore options for reducing your debt, such as debt consolidation or negotiation."
+                    ];
+                }
 
-            scoreCategory.textContent = category;
-            scoreCategory.classList.remove('hidden');
+                scoreCategory.textContent = category;
+                scoreCategory.classList.remove('hidden');
 
-            // Display advice
-            adviceList.innerHTML = '';
-            advice.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = item;
-                adviceList.appendChild(li);
+                // Display advice
+                adviceList.innerHTML = '';
+                advice.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    adviceList.appendChild(li);
+                });
+
+                // Calculate and display budgeting info
+                const expenses = monthlyIncome - monthlySavings;
+                const remaining = monthlyIncome - expenses;
+                displayIncome.textContent = `$${monthlyIncome.toFixed(2)}`;
+                displaySavings.textContent = `$${monthlySavings.toFixed(2)}`;
+                displayDebt.textContent = `$${totalDebt.toFixed(2)}`;
+                displayExpenses.textContent = `$${expenses.toFixed(2)}`;
+                displayRemaining.textContent = `$${remaining.toFixed(2)}`;
             });
-
-            // Calculate and display budgeting info
-            const expenses = monthlyIncome - monthlySavings;
-            const remaining = monthlyIncome - expenses;
-            displayIncome.textContent = `$${monthlyIncome.toFixed(2)}`;
-            displaySavings.textContent = `$${monthlySavings.toFixed(2)}`;
-            displayDebt.textContent = `$${totalDebt.toFixed(2)}`;
-            displayExpenses.textContent = `$${expenses.toFixed(2)}`;
-            displayRemaining.textContent = `$${remaining.toFixed(2)}`;
-        });
-
+        }
+        
         // Contact Form Submission (currently does nothing)
         document.getElementById('contactForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            // In a real application, you would handle form submission here (e.g., send data to a server)
             alert('Message sent successfully!');
         });
+    </script>
+</body>
+</html>
