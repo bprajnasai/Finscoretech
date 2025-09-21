@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinscoreTech - Calculate Score</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="page-container" data-page="score">
+        <header>
+            <h1 class="page-title">Calculate Your Finscore</h1>
+            <p class="subtitle">Enter your financial details to get started.</p>
+        </header>
+        <main class="content-card">
+            <form id="finscore-form">
+                <div class="form-group">
+                    <label for="salary">Monthly Salary ($):</label>
+                    <input type="number" id="salary" required>
+                </div>
+                <div class="form-group">
+                    <label for="expenses">Monthly Expenses ($):</label>
+                    <input type="number" id="expenses" required>
+                </div>
+                <div class="form-group">
+                    <label for="savings">Monthly Savings ($):</label>
+                    <input type="number" id="savings" required>
+                </div>
+                <button type="submit" class="cta-button">Calculate</button>
+            </form>
+
+            <div id="result-section" class="hidden">
+                <h2 id="score-display">Your Finscore: </h2>
+                <div class="graph-container">
+                    <canvas id="financial-chart"></canvas>
+                </div>
+                <div class="tips-summary">
+                    <h3>Smart Tips for You:</h3>
+                    <ul id="personal-tips-list"></ul>
+                </div>
+            </div>
+        </main>
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+    <script src="script.js" defer></script>
+</body>
+</html>
